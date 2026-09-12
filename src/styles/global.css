@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sh-olive: #606c38;
+  --color-sh-dark: #283618;
+  --color-sh-cream: #fefae0;
+  --color-sh-tan: #dda15e;
+  --color-sh-rust: #bc6c25;
+  --color-sh-darker: #182210;
+  --color-sh-card-dark: #1f2a13;
+
+  --color-brand-olive: #606c38;
+  --color-brand-darkolive: #283618;
+  --color-brand-cream: #fefae0;
+  --color-brand-sand: #dda15e;
+  --color-brand-earth: #bc6c25;
+
+  --font-family-sans: "Inter", sans-serif;
+  --font-family-heading: "Oswald", sans-serif;
+
+  --shadow-luxury: 0 20px 40px -15px rgba(40, 54, 24, 0.15);
+  --shadow-glow: 0 0 25px rgba(221, 161, 94, 0.25);
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/public/fonts/Inter_24pt-Thin.ttf") format("ttf");
+  font-weight: 300;
+  font-style: normal;
+  display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/public/fonts/Inter_24pt-Regular.ttf") format("ttf");
+  font-weight: 400;
+  font-style: normal;
+  display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/public/fonts/Inter_28pt-Medium.ttf") format("ttf");
+  font-weight: 500;
+  font-style: normal;
+  display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/public/fonts/Inter_24pt-SemiBold.ttf") format("ttf");
+  font-weight: 600;
+  font-style: normal;
+  display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/public/fonts/Inter_24pt-Bold.ttf") format("ttf");
+  font-weight: 700;
+  font-style: normal;
+  display: swap;
+}
+
+@font-face {
+  font-family: "Oswald";
+  src: url("/public/fonts/Oswald_400-Regular.ttf") format("ttf");
+  font-weight: 400;
+  font-style: normal;
+  display: swap;
+}
+
+@font-face {
+  font-family: "Oswald";
+  src: url("/public/fonts/Oswald-Medium.ttf") format("ttf");
+  font-weight: 500;
+  font-style: normal;
+  display: swap;
+}
+
+@font-face {
+  font-family: "Oswald";
+  src: url("/public/fonts/Oswald-SemiBold.ttf") format("ttf");
+  font-weight: 600;
+  font-style: normal;
+  display: swap;
+}
+
+@font-face {
+  font-family: "Oswald";
+  src: url("/public/fonts/Oswald-Bold.ttf") format("ttf");
+  font-weight: 700;
+  font-style: normal;
+  display: swap;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #283618;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #dda15e;
+  border-radius: 3px;
+}

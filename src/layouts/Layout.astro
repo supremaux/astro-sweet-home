@@ -1,0 +1,31 @@
+---
+import "../styles/global.css";
+
+const { content } = Astro.props;
+const title = content?.title || "Sweet Home - Imóveis de Alto Padrão";
+const description =
+  content?.description ||
+  "Encontre imóveis de alto padrão com a Sweet Home. Descubra casas e apartamentos exclusivos para venda e aluguel.";
+const keywords =
+  content?.keywords ||
+  "imóveis de alto padrão, casas de luxo, apartamentos exclusivos, venda de imóveis, aluguel de imóveis, Sweet Home";
+---
+
+<html lang="pt-BR" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="{description}" />
+    <meta name="keywords" content="{keywords}" />
+    <title>{title}</title></head
+  >"
+
+  <body
+    class="bg-brand-cream text-brand-darkolive font-sans antialiased selection:bg-brand-sand selection:text-white flex flex-col min-h-screen overflow-x-hidden"
+  >
+    <slot />
+  </body>
+
+
+</html>
