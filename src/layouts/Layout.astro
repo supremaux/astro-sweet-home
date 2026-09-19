@@ -19,13 +19,32 @@ const keywords =
     <meta name="description" content="{description}" />
     <meta name="keywords" content="{keywords}" />
     <title>{title}</title></head
-  >"
+  >
 
   <body
     class="bg-brand-cream text-brand-darkolive font-sans antialiased selection:bg-brand-sand selection:text-white flex flex-col min-h-screen overflow-x-hidden"
   >
     <slot />
   </body>
-
-
 </html>
+
+<script is:inline>
+  // Mobile Menu Toggle Script
+  const menuBtn = document.getElementById("mobile-menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const iconOpen = document.getElementById("menu-icon-open");
+  const iconClose = document.getElementById("menu-icon-close");
+
+  menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+    iconOpen.classList.toggle("hidden");
+    iconClose.classList.toggle("hidden");
+  });
+
+  function openSellModal() {
+    alert(
+      "Para anunciar seu imóvel com a Sweet Home, preencha o formulário de contato ao final da página ou fale diretamente com nossa central via WhatsApp.",
+    );
+    document.getElementById("contato").scrollIntoView({ behavior: "smooth" });
+  }
+</script>

@@ -1,0 +1,26 @@
+---
+interface Props {
+  width?: number;
+  height?: number;
+  loading?: "lazy" | "eager";
+  decoding?: "async" | "sync";
+  priority?: "high" | "low";
+}
+
+const { width, height, loading, decoding, priority } = Astro.props;
+---
+
+<img
+  src="/logo_Invert.svg"
+  alt="Sweet Home Logo"
+  class="h-10 sm:h-12 w-auto object-contain transition-transform group-hover:scale-105"
+  width={width}
+  height={height}
+  loading={loading}
+  decoding={decoding}
+  fetchpriority={priority}
+  onerror="
+    this.src =
+      'https://placehold.co/180x60/283618/FEFAE0?text=SWEET+HOME'
+  "
+/>
