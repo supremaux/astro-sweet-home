@@ -1,0 +1,74 @@
+---
+import { Sparkles, ArrowRight, Check } from "@lucide/astro";
+---
+
+<!-- Hero Section -->
+<section
+  class="relative min-h-[85vh] sm:min-h-screen flex items-center pt-24 pb-16 bg-brand-darkolive overflow-hidden"
+>
+  <div class="absolute inset-0 z-0">
+    <img
+      src="/casaHero.avif"
+      alt="Mansão moderna"
+      class="w-full h-full object-cover object-center opacity-30"
+      width="2000"
+      height="1200"
+      onerror="
+            this.src =
+              'https://placehold.co/2000x1200/283618/FEFAE0?text=SWEET+HOME'
+          "
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
+    <div
+      class="absolute inset-0 bg-linear-to-t from-brand-darkolive via-brand-darkolive/70 to-transparent"
+    >
+    </div>
+  </div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <div class="max-w-3xl space-y-6 text-center sm:text-left">
+      <span
+        class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-sand/20 border border-brand-sand/40 text-brand-sand font-mono text-xs sm:text-sm uppercase tracking-widest"
+      >
+        <Sparkles class="w-4 h-4" /> Exclusividade & Sofisticação
+      </span>
+
+      <h1
+        class="font-display text-4xl sm:text-6xl lg:text-7xl font-bold text-brand-cream leading-tight uppercase"
+      >
+        Construindo
+        <span class="text-brand-sand italic font-serif lowercase font-normal"
+          >espaços</span
+        >
+        <br />
+        extraordinários.
+      </h1>
+
+      <p
+        class="text-base sm:text-lg text-brand-cream/80 max-w-2xl font-light leading-relaxed"
+      >
+        A Sweet Home conecta você às propriedades residenciais e comerciais mais
+        exclusivas da região, combinando arquitetura atemporal e atendimento
+        personalizado.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center gap-4 pt-4">
+        <a
+          href="#imoveis"
+          class="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-sand hover:bg-brand-earth text-brand-darkolive hover:text-white font-semibold transition-all duration-300 shadow-lg hover:shadow-xl text-center flex items-center justify-center gap-2"
+        >
+          <span>Explorar Imóveis</span>
+          <ArrowRight class="w-5 h-5" />
+        </a>
+        <a
+          href="#contato"
+          class="w-full sm:w-auto px-8 py-4 rounded-xl border border-brand-cream/30 hover:border-brand-sand text-brand-cream hover:text-brand-sand font-medium transition-all duration-300 text-center"
+        >
+          Já Escolhi Meu Imóvel
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

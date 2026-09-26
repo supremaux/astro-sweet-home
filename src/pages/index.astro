@@ -2,7 +2,33 @@
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Layout from "../layouts/Layout.astro";
-import { ChevronDown } from "@lucide/astro";
+import Hero from "../components/Hero.astro";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BarChart3,
+  Bath,
+  Bed,
+  Briefcase,
+  Building,
+  Building2,
+  ChevronDown,
+  Clock,
+  Compass,
+  ExternalLink,
+  Home,
+  Key,
+  Mail,
+  MapPin,
+  Maximize2,
+  Phone,
+  PhoneCall,
+  Search,
+  ShieldCheck,
+  Sparkles,
+  Tag,
+  Trees,
+} from "@lucide/astro";
 ---
 
 <Layout>
@@ -10,76 +36,7 @@ import { ChevronDown } from "@lucide/astro";
     <Header />
 
     <!-- Hero Section -->
-    <section
-      class="relative min-h-[85vh] sm:min-h-screen flex items-center pt-24 pb-16 bg-brand-darkolive overflow-hidden"
-    >
-      <div class="absolute inset-0 z-0">
-        <img
-          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=2000"
-          alt="Mansão moderna"
-          class="w-full h-full object-cover object-center opacity-30"
-          width="2000"
-          height="1200"
-          onerror="
-            this.src =
-              'https://placehold.co/2000x1200/283618/FEFAE0?text=SWEET+HOME'
-          "
-          loading="eager"
-          decoding="sync"
-          fetchpriority="high"
-        />
-        <div
-          class="absolute inset-0 bg-gradient-to-t from-brand-darkolive via-brand-darkolive/70 to-transparent"
-        >
-        </div>
-      </div>
-
-      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div class="max-w-3xl space-y-6 text-center sm:text-left">
-          <span
-            class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-sand/20 border border-brand-sand/40 text-brand-sand font-mono text-xs sm:text-sm uppercase tracking-widest"
-          >
-            <i data-lucide="sparkles" class="w-4 h-4"></i> Exclusividade & Sofisticação
-          </span>
-
-          <h1
-            class="font-display text-4xl sm:text-6xl lg:text-7xl font-bold text-brand-cream leading-tight uppercase"
-          >
-            Construindo
-            <span
-              class="text-brand-sand italic font-serif lowercase font-normal"
-              >espaços</span
-            >
-            <br />
-            extraordinários.
-          </h1>
-
-          <p
-            class="text-base sm:text-lg text-brand-cream/80 max-w-2xl font-light leading-relaxed"
-          >
-            A Sweet Home conecta você às propriedades residenciais e comerciais
-            mais exclusivas da região, combinando arquitetura atemporal e
-            atendimento personalizado.
-          </p>
-
-          <div class="flex flex-col sm:flex-row items-center gap-4 pt-4">
-            <a
-              href="#imoveis"
-              class="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-sand hover:bg-brand-earth text-brand-darkolive hover:text-white font-semibold transition-all duration-300 shadow-lg hover:shadow-xl text-center flex items-center justify-center gap-2"
-            >
-              <span>Explorar Imóveis</span>
-              <i data-lucide="arrow-right" class="w-5 h-5"></i>
-            </a>
-            <a
-              href="#contato"
-              class="w-full sm:w-auto px-8 py-4 rounded-xl border border-brand-cream/30 hover:border-brand-sand text-brand-cream hover:text-brand-sand font-medium transition-all duration-300 text-center"
-            >
-              Já Escolhi Meu Imóvel
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
+    <Hero />
 
     <section
       class="relative z-20 -mt-12 sm:-mt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full"
@@ -93,19 +50,19 @@ import { ChevronDown } from "@lucide/astro";
           <button
             class="px-5 py-2.5 rounded-lg bg-brand-darkolive text-brand-cream font-medium text-sm sm:text-base transition-colors flex items-center gap-2"
           >
-            <i data-lucide="tag" class="w-4 h-4 text-brand-sand"></i>
+            <Tag class="w-4 h-4 text-brand-sand" />
             <span>Comprar</span>
           </button>
           <button
             class="px-5 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium text-sm sm:text-base transition-colors flex items-center gap-2"
           >
-            <i data-lucide="key" class="w-4 h-4"></i>
+            <Key class="w-4 h-4" />
             <span>Alugar</span>
           </button>
           <button
             class="px-5 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium text-sm sm:text-base transition-colors flex items-center gap-2"
           >
-            <i data-lucide="building" class="w-4 h-4"></i>
+            <Building class="w-4 h-4" />
             <span>Vender</span>
           </button>
         </div>
@@ -120,10 +77,9 @@ import { ChevronDown } from "@lucide/astro";
               >Localização ou Código</label
             >
             <div class="relative">
-              <i
-                data-lucide="map-pin"
+              <MapPin
                 class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
-              ></i>
+              />
               <input
                 type="text"
                 placeholder="Onde? Ex: Bairro, Cidade ou ID"
@@ -138,10 +94,9 @@ import { ChevronDown } from "@lucide/astro";
               >Tipo de Imóvel</label
             >
             <div class="relative">
-              <i
-                data-lucide="home"
+              <Home
                 class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
-              ></i>
+              />
               <select
                 class="w-full pl-11 pr-8 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-sand text-sm appearance-none text-gray-700"
               >
@@ -151,10 +106,9 @@ import { ChevronDown } from "@lucide/astro";
                 <option>Sítio / Fazenda</option>
                 <option>Comercial / Galpão</option>
               </select>
-              <i
-                data-lucide="chevron-down"
+              <ChevronDown
                 class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-              ></i>
+              />
             </div>
           </div>
 
@@ -164,10 +118,9 @@ import { ChevronDown } from "@lucide/astro";
               >Dormitórios</label
             >
             <div class="relative">
-              <i
-                data-lucide="bed"
+              <Bed
                 class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
-              ></i>
+              />
               <select
                 class="w-full pl-11 pr-8 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-sand text-sm appearance-none text-gray-700"
               >
@@ -177,10 +130,9 @@ import { ChevronDown } from "@lucide/astro";
                 <option>3+ Quartos</option>
                 <option>4+ Suítes</option>
               </select>
-              <i
-                data-lucide="chevron-down"
+              <ChevronDown
                 class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-              ></i>
+              />
             </div>
           </div>
 
@@ -189,7 +141,7 @@ import { ChevronDown } from "@lucide/astro";
               type="submit"
               class="w-full py-3.5 bg-brand-earth hover:bg-brand-darkolive text-white font-semibold rounded-xl transition-colors duration-300 shadow-md flex items-center justify-center gap-2"
             >
-              <i data-lucide="search" class="w-5 h-5"></i>
+              <Search class="w-5 h-5" />
               <span>Buscar Imóveis</span>
             </button>
           </div>
@@ -284,7 +236,7 @@ import { ChevronDown } from "@lucide/astro";
             class="inline-flex items-center gap-2 text-brand-earth hover:text-brand-darkolive font-semibold transition-colors"
           >
             <span>Ver catálogo completo</span>
-            <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+            <ArrowUpRight class="w-5 h-5" />
           </a>
         </div>
 
@@ -339,13 +291,13 @@ import { ChevronDown } from "@lucide/astro";
                 class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-medium"
               >
                 <span class="flex items-center gap-1"
-                  ><i data-lucide="bed" class="w-4 h-4"></i> 4 Suítes</span
+                  ><Bed class="w-4 h-4" /> 4 Suítes</span
                 >
                 <span class="flex items-center gap-1"
-                  ><i data-lucide="bath" class="w-4 h-4"></i> 6 Banhos</span
+                  ><Bath class="w-4 h-4" /> 6 Banhos</span
                 >
                 <span class="flex items-center gap-1"
-                  ><i data-lucide="maximize-2" class="w-4 h-4"></i> 520 m²</span
+                  ><Maximize2 class="w-4 h-4" /> 520 m²</span
                 >
               </div>
             </div>
@@ -397,13 +349,13 @@ import { ChevronDown } from "@lucide/astro";
                 class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-medium"
               >
                 <span class="flex items-center gap-1"
-                  ><i data-lucide="bed" class="w-4 h-4"></i> 3 Suítes</span
+                  ><Bed class="w-4 h-4" /> 3 Suítes</span
                 >
                 <span class="flex items-center gap-1"
-                  ><i data-lucide="bath" class="w-4 h-4"></i> 4 Banhos</span
+                  ><Bath class="w-4 h-4" /> 4 Banhos</span
                 >
                 <span class="flex items-center gap-1"
-                  ><i data-lucide="maximize-2" class="w-4 h-4"></i> 380 m²</span
+                  ><Maximize2 class="w-4 h-4" /> 380 m²</span
                 >
               </div>
             </div>
@@ -455,10 +407,10 @@ import { ChevronDown } from "@lucide/astro";
                 class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-medium"
               >
                 <span class="flex items-center gap-1"
-                  ><i data-lucide="trees" class="w-4 h-4"></i> 450 Hectares</span
+                  ><Trees class="w-4 h-4" /> 450 Hectares</span
                 >
                 <span class="flex items-center gap-1"
-                  ><i data-lucide="home" class="w-4 h-4"></i> Sede 600m²</span
+                  ><Home class="w-4 h-4" /> Sede 600m²</span
                 >
               </div>
             </div>
@@ -533,7 +485,7 @@ import { ChevronDown } from "@lucide/astro";
               class="grid grid-cols-2 gap-6 pt-4 border-t border-sh-olive/40"
             >
               <div class="space-y-1">
-                <i data-lucide="shield-check" class="w-8 h-8 text-sh-tan"></i>
+                <ShieldCheck class="w-8 h-8 text-sh-tan" />
                 <h4 class="font-heading font-bold uppercase text-white text-lg">
                   Segurança Jurídica
                 </h4>
@@ -543,7 +495,7 @@ import { ChevronDown } from "@lucide/astro";
                 </p>
               </div>
               <div class="space-y-1">
-                <i data-lucide="sparkles" class="w-8 h-8 text-sh-tan"></i>
+                <Sparkles class="w-8 h-8 text-sh-tan" />
                 <h4 class="font-heading font-bold uppercase text-white text-lg">
                   Curadoria Exclusiva
                 </h4>
@@ -581,7 +533,7 @@ import { ChevronDown } from "@lucide/astro";
           <div
             class="w-14 h-14 bg-sh-cream rounded-2xl flex items-center justify-center text-sh-rust mb-6 border border-sh-tan/40 group-hover:bg-sh-rust group-hover:text-white transition-colors"
           >
-            <i data-lucide="building-2" class="w-7 h-7"></i>
+            <Building2 class="w-7 h-7" />
           </div>
           <h3
             class="text-2xl font-heading font-bold text-sh-dark uppercase mb-3"
@@ -598,7 +550,7 @@ import { ChevronDown } from "@lucide/astro";
             class="text-xs font-bold uppercase tracking-wider text-sh-rust hover:text-sh-dark inline-flex items-center gap-2"
           >
             Ver Opções Residênciais
-            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            <ArrowRight class="w-4 h-4" />
           </a>
         </div>
 
@@ -609,7 +561,7 @@ import { ChevronDown } from "@lucide/astro";
           <div
             class="w-14 h-14 bg-sh-cream rounded-2xl flex items-center justify-center text-sh-olive mb-6 border border-sh-tan/40 group-hover:bg-sh-olive group-hover:text-white transition-colors"
           >
-            <i data-lucide="trees" class="w-7 h-7"></i>
+            <Trees class="w-7 h-7" />
           </div>
           <h3
             class="text-2xl font-heading font-bold text-sh-dark uppercase mb-3"
@@ -625,7 +577,7 @@ import { ChevronDown } from "@lucide/astro";
             onclick="filterCategory('rurais')"
             class="text-xs font-bold uppercase tracking-wider text-sh-olive hover:text-sh-dark inline-flex items-center gap-2"
           >
-            Ver Opções Rurais <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            Ver Opções Rurais <ArrowRight class="w-4 h-4" />
           </a>
         </div>
 
@@ -636,7 +588,7 @@ import { ChevronDown } from "@lucide/astro";
           <div
             class="w-14 h-14 bg-sh-cream rounded-2xl flex items-center justify-center text-sh-dark mb-6 border border-sh-tan/40 group-hover:bg-sh-dark group-hover:text-white transition-colors"
           >
-            <i data-lucide="briefcase" class="w-7 h-7"></i>
+            <Briefcase class="w-7 h-7" />
           </div>
           <h3
             class="text-2xl font-heading font-bold text-sh-dark uppercase mb-3"
@@ -653,7 +605,7 @@ import { ChevronDown } from "@lucide/astro";
             class="text-xs font-bold uppercase tracking-wider text-sh-dark hover:text-sh-rust inline-flex items-center gap-2"
           >
             Ver Opções Comerciais
-            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            <ArrowRight class="w-4 h-4" />
           </a>
         </div>
       </div>
@@ -686,7 +638,7 @@ import { ChevronDown } from "@lucide/astro";
             <div
               class="w-12 h-12 rounded-xl bg-brand-sand/20 text-brand-sand flex items-center justify-center"
             >
-              <i data-lucide="compass" class="w-6 h-6"></i>
+              <Compass class="w-6 h-6" />
             </div>
             <h3 class="font-display text-2xl font-semibold">
               Consultoria Exclusiva
@@ -703,7 +655,7 @@ import { ChevronDown } from "@lucide/astro";
             <div
               class="w-12 h-12 rounded-xl bg-brand-sand/20 text-brand-sand flex items-center justify-center"
             >
-              <i data-lucide="shield-check" class="w-6 h-6"></i>
+              <ShieldCheck class="w-6 h-6" />
             </div>
             <h3 class="font-display text-2xl font-semibold">
               Segurança Jurídica
@@ -720,7 +672,7 @@ import { ChevronDown } from "@lucide/astro";
             <div
               class="w-12 h-12 rounded-xl bg-brand-sand/20 text-brand-sand flex items-center justify-center"
             >
-              <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+              <BarChart3 class="w-6 h-6" />
             </div>
             <h3 class="font-display text-2xl font-semibold">
               Avaliação de Ativos
@@ -759,7 +711,7 @@ import { ChevronDown } from "@lucide/astro";
             <div class="space-y-4 pt-4">
               <div class="flex items-center gap-4">
                 <div class="p-3 bg-sh-olive/30 rounded-xl text-sh-tan">
-                  <i data-lucide="phone-call" class="w-6 h-6"></i>
+                  <PhoneCall class="w-6 h-6" />
                 </div>
                 <div>
                   <span
@@ -775,7 +727,7 @@ import { ChevronDown } from "@lucide/astro";
 
               <div class="flex items-center gap-4">
                 <div class="p-3 bg-sh-olive/30 rounded-xl text-sh-tan">
-                  <i data-lucide="mail" class="w-6 h-6"></i>
+                  <Mail class="w-6 h-6" />
                 </div>
                 <div>
                   <span
@@ -926,15 +878,15 @@ import { ChevronDown } from "@lucide/astro";
               Unidade Central
             </h3>
             <p class="text-gray-400 text-xs flex items-center gap-2">
-              <i data-lucide="map-pin" class="w-4 h-4 text-sh-tan shrink-0"></i>
+              <MapPin class="w-4 h-4 text-sh-tan shrink-0" />
               Av. Afonso Pena, 4500 - Jardim dos Estados
             </p>
             <p class="text-gray-400 text-xs flex items-center gap-2">
-              <i data-lucide="phone" class="w-4 h-4 text-sh-tan shrink-0"></i>
+              <Phone class="w-4 h-4 text-sh-tan shrink-0" />
               (67) 3300-1000
             </p>
             <p class="text-gray-400 text-xs flex items-center gap-2">
-              <i data-lucide="clock" class="w-4 h-4 text-sh-tan shrink-0"></i>
+              <Clock class="w-4 h-4 text-sh-tan shrink-0" />
               Seg a Sex: 08h às 18h | Sáb: 08h às 12h
             </p>
             <a
@@ -943,7 +895,7 @@ import { ChevronDown } from "@lucide/astro";
               class="w-full mt-2 inline-flex items-center justify-center gap-2 bg-sh-olive/30 hover:bg-sh-olive text-sh-cream py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
             >
               Como Chegar
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              <ExternalLink class="w-3.5 h-3.5" />
             </a>
           </div>
 
@@ -974,15 +926,15 @@ import { ChevronDown } from "@lucide/astro";
               Unidade Alphaville
             </h3>
             <p class="text-gray-400 text-xs flex items-center gap-2">
-              <i data-lucide="map-pin" class="w-4 h-4 text-sh-tan shrink-0"></i>
+              <MapPin class="w-4 h-4 text-sh-tan shrink-0" />
               Via Park, 1200 - Cidade Jardim
             </p>
             <p class="text-gray-400 text-xs flex items-center gap-2">
-              <i data-lucide="phone" class="w-4 h-4 text-sh-tan shrink-0"></i>
+              <Phone class="w-4 h-4 text-sh-tan shrink-0" />
               (67) 3300-2000
             </p>
             <p class="text-gray-400 text-xs flex items-center gap-2">
-              <i data-lucide="clock" class="w-4 h-4 text-sh-tan shrink-0"></i>
+              <Clock class="w-4 h-4 text-sh-tan shrink-0" />
               Seg a Sáb: 08h às 19h
             </p>
             <a
@@ -991,7 +943,7 @@ import { ChevronDown } from "@lucide/astro";
               class="w-full mt-2 inline-flex items-center justify-center gap-2 bg-sh-olive/30 hover:bg-sh-olive text-sh-cream py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
             >
               Como Chegar
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              <ExternalLink class="w-3.5 h-3.5" />
             </a>
           </div>
 
@@ -1022,15 +974,15 @@ import { ChevronDown } from "@lucide/astro";
               Unidade Campo & Agro
             </h3>
             <p class="text-gray-400 text-xs flex items-center gap-2">
-              <i data-lucide="map-pin" class="w-4 h-4 text-sh-tan shrink-0"></i>
+              <MapPin class="w-4 h-4 text-sh-tan shrink-0" />
               Rod. BR-163, Km 04 - Polo Empresarial
             </p>
             <p class="text-gray-400 text-xs flex items-center gap-2">
-              <i data-lucide="phone" class="w-4 h-4 text-sh-tan shrink-0"></i>
+              <Phone class="w-4 h-4 text-sh-tan shrink-0" />
               (67) 3300-3000
             </p>
             <p class="text-gray-400 text-xs flex items-center gap-2">
-              <i data-lucide="clock" class="w-4 h-4 text-sh-tan shrink-0"></i>
+              <Clock class="w-4 h-4 text-sh-tan shrink-0" />
               Seg a Sex: 07:30 às 17:30
             </p>
             <a
@@ -1039,7 +991,7 @@ import { ChevronDown } from "@lucide/astro";
               class="w-full mt-2 inline-flex items-center justify-center gap-2 bg-sh-olive/30 hover:bg-sh-olive text-sh-cream py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
             >
               Como Chegar
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              <ExternalLink class="w-3.5 h-3.5" />
             </a>
           </div>
         </div>
