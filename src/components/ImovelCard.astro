@@ -1,0 +1,121 @@
+---
+import {Bed, Bath, Maximize2, Trees, Home as HomeIcon} from '@lucide/astro'
+import {urlFor} from '../lib/sanity'
+
+interface Props {
+  imovel: {
+    _id: string
+    titulo: string
+    slug: {current: string}
+    categoria: string
+    finalidade: string
+    destaque?: boolean
+    preco: number
+    bairro?: string
+    cidade: string
+    descricaoTexto?: string
+    quartos?: number
+    suites?: number
+    banheiros?: number
+    areaUtil?: number
+    areaTerreno?: number
+    galeria?: any[]
+  }
+}
+
+const {imovel} = Astro.props
+
+const finalidadeLabel = imovel.finalidade === 'venda' ? 'Venda' : 'Aluguel'
+const badgeClass =
+  imovel.finalidade === 'venda'
+    ? 'bg-sh-dark/90 text-sh-cream'
+    : 'bg-sh-olive text-sh-cream'
+
+const precoFormatado = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+  maximumFractionDigits: 0,
+}).format(imovel.preco)
+
+const capa = imovel.galeria?.[0]
+const imagemUrl = capa
+  ? urlFor(capa).width(1000).height(667).fit('crop').url()
+  : 'https://placehold.co/1000x667/283618/FEFAE0?text=SWEET+HOME'
+
+const categoriaLabel =
+  imovel.categoria.charAt(0).toUpperCase() + imovel.categoria.slice(1)
+
+const localizacao = [imovel.bairro, imovel.cidade].filter(Boolean).join(' • ')
+
+const href = `/imoveis/${imovel.categoria}/${imovel.slug.current}`
+---
+
+<article
+  class="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 flex flex-col"
+>
+  <a href={href} class="relative h-64 overflow-hidden block">
+    <img
+      src={imagemUrl}
+      alt={imovel.titulo}
+      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+      width="1000"
+      height="667"
+      loading="lazy"
+      decoding="async"
+    />
+    <span
+      class={`absolute top-4 left-4 backdrop-blur-md text-xs font-semibold px-3 py-1.5 rounded-full uppercase tracking-wider ${badgeClass}`}
+    >
+      {finalidadeLabel}
+    </span>
+    {imovel.destaque && (
+      <span
+        class="absolute top-4 right-4 bg-sh-tan text-sh-dark font-bold text-xs px-3 py-1.5 rounded-full uppercase tracking-wider"
+      >
+        Destaque
+      </span>
+    )}
+    <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end text-white">
+      <span class="font-heading text-2xl font-bold text-sh-cream drop-shadow-md">
+        {precoFormatado}
+      </span>
+    </div>
+  </a>
+
+  <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+    <div>
+      <span class="text-xs text-sh-rust font-medium">
+        {categoriaLabel}{localizacao ? ` • ${localizacao}` : ''}
+      </span>
+      <h3 class="font-heading text-2xl font-semibold text-sh-dark mt-1 group-hover:text-sh-tan transition-colors">
+        <a href={href}>{imovel.titulo}</a>
+      </h3>
+      {imovel.descricaoTexto && (
+        <p class="text-sm text-gray-600 mt-2 line-clamp-2">{imovel.descricaoTexto}</p>
+      )}
+    </div>
+
+    <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-medium">
+      {imovel.quartos != null && (
+        <span class="flex items-center gap-1">
+          <Bed class="w-4 h-4" /> {imovel.quartos} {imovel.quartos === 1 ? 'Quarto' : 'Quartos'}
+        </span>
+      )}
+      {imovel.banheiros != null && (
+        <span class="flex items-center gap-1">
+          <Bath class="w-4 h-4" /> {imovel.banheiros} {imovel.banheiros === 1 ? 'Banho' : 'Banhos'}
+        </span>
+      )}
+      {imovel.areaUtil != null && (
+        <span class="flex items-center gap-1">
+          <Maximize2 class="w-4 h-4" /> {imovel.areaUtil} m²
+        </span>
+      )}
+      {imovel.categoria === 'rural' && imovel.areaTerreno != null && (
+        <span class="flex items-center gap-1">
+          <Trees class="w-4 h-4" /> {imovel.areaTerreno} ha
+        </span>
+      )}
+    </div>
+  </div>
+</article>

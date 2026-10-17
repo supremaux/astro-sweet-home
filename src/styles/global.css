@@ -22,76 +22,78 @@
   --shadow-glow: 0 0 25px rgba(221, 161, 94, 0.25);
 }
 
+/* ---------- Inter (24pt optical size) ---------- */
 @font-face {
   font-family: "Inter";
-  src: url("/public/fonts/Inter_24pt-Thin.ttf") format("ttf");
+  src: url("/fonts/Inter_24pt-Light.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
-  display: swap;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Inter";
-  src: url("/public/fonts/Inter_24pt-Regular.ttf") format("ttf");
+  src: url("/fonts/Inter_24pt-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
-  display: swap;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Inter";
-  src: url("/public/fonts/Inter_28pt-Medium.ttf") format("ttf");
+  src: url("/fonts/Inter_24pt-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
-  display: swap;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Inter";
-  src: url("/public/fonts/Inter_24pt-SemiBold.ttf") format("ttf");
+  src: url("/fonts/Inter_24pt-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
-  display: swap;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Inter";
-  src: url("/public/fonts/Inter_24pt-Bold.ttf") format("ttf");
+  src: url("/fonts/Inter_24pt-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
-  display: swap;
+  font-display: swap;
 }
 
+/* ---------- Oswald ---------- */
 @font-face {
   font-family: "Oswald";
-  src: url("/public/fonts/Oswald_400-Regular.ttf") format("ttf");
+  src: url("/fonts/Oswald-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
-  display: swap;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Oswald";
-  src: url("/public/fonts/Oswald-Medium.ttf") format("ttf");
+  src: url("/fonts/Oswald-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
-  display: swap;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Oswald";
-  src: url("/public/fonts/Oswald-SemiBold.ttf") format("ttf");
+  src: url("/fonts/Oswald-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
-  display: swap;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Oswald";
-  src: url("/public/fonts/Oswald-Bold.ttf") format("ttf");
+  src: url("/fonts/Oswald-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
-  display: swap;
+  font-display: swap;
 }
 
 body {

@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import ImovelCard from '../components/ImovelCard.astro'
+import {sanityClient} from '../lib/sanity'
+
+const imoveis = await sanityClient.fetch(
+  `*[_type == "imovel" && categoria == "residencial"] | order(_createdAt desc){
+    _id, titulo, slug, categoria, finalidade, destaque, preco,
+    bairro, cidade, quartos, suites, banheiros, areaUtil, areaTerreno,
+    galeria,
+    "descricaoTexto": pt::text(descricao)
+  }`
+)
+---
+
+<Layout title="Imóveis Residenciais | Sweet Home Imóveis">
+  <Header />
+  <main class="pt-20">
+    <section class="bg-sh-dark text-sh-cream py-16 sm:py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <span class="text-xs font-bold uppercase tracking-widest text-sh-tan">
+          Portfólio Residencial
+        </span>
+        <h1 class="font-heading text-4xl sm:text-5xl font-bold uppercase mt-2">
+          Imóveis Residenciais
+        </h1>
+        <p class="text-sh-cream/80 max-w-2xl mt-4 font-light">
+          Casas, apartamentos, penthouses e residências de alto padrão selecionadas
+          pela curadoria Sweet Home.
+        </p>
+      </div>
+    </section>
+
+    <section class="py-16 sm:py-20 bg-brand-cream">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {imoveis.length === 0 ? (
+          <p class="text-center text-gray-500">Nenhum imóvel residencial cadastrado ainda.</p>
+        ) : (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {imoveis.map((imovel) => <ImovelCard imovel={imovel} />)}
+          </div>
+        )}
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
