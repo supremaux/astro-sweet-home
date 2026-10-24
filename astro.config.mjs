@@ -10,10 +10,13 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [// 👇 update these lines
-  sanity({
-    projectId: "9n6e5cyx",
-    dataset: "production",
-    useCdn: false, // for static builds
-  }), react()],
+  integrations: [
+    // 👇 update these lines
+    sanity({
+      projectId: "9n6e5cyx",
+      dataset: "production",
+      useCdn: false, // for static builds
+    }),
+    react(),
+  ],
 });
