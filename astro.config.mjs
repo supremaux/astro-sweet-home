@@ -13,9 +13,10 @@ export default defineConfig({
   integrations: [
     // 👇 update these lines
     sanity({
-      projectId: "9n6e5cyx",
-      dataset: "production",
-      useCdn: false, // for static builds
+      projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID ?? "9n6e5cyx",
+      dataset: import.meta.env.PUBLIC_SANITY_DATASET ?? "production",
+      apiVersion: "2025-01-01",
+      useCdn: true,
     }),
     react(),
   ],
