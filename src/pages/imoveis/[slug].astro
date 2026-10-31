@@ -1,0 +1,770 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { PortableText } from "astro-portabletext";
+import {
+  MapPin,
+  Bed,
+  Bath,
+  Maximize2,
+  Car,
+  Trees,
+  Calendar,
+  Building2,
+  Phone,
+  MessageCircle,
+  Share2,
+  Link as LinkIcon,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  Home as HomeIcon,
+} from "@lucide/astro";
+import { sanityClient, urlFor } from "../../lib/sanity";
+
+export async function getStaticPaths() {
+  const imoveis = await sanityClient.fetch(
+    `*[_type == "imovel" && defined(slug.current) && defined(categoria)]{
+      "slug": slug.current,
+      "categoria": categoria,
+    }`,
+  );
+
+  console.log("Rotas geradas:", imoveis);
+
+  return imoveis.map((imovel) => ({
+    params: {
+      categoria: imovel.categoria,
+      slug: imovel.slug,
+    },
+    props: { imovelSlug: imovel.slug, imovelCategoria: imovel.categoria },
+  }));
+}
+
+const { imovelSlug, imovelCategoria } = Astro.props;
+
+const imovel = await sanityClient.fetch(
+  `*[_type == "imovel" && slug.current == $slug && categoria == $categoria][0]{
+    _id,
+    titulo,
+    slug,
+    codigo,
+    categoria,
+    finalidade,
+    destaque,
+    preco,
+    precoCondominio,
+    valorIptu,
+    endereco,
+    bairro,
+    cidade,
+    quartos,
+    suites,
+    banheiros,
+    areaUtil,
+    areaTerreno,
+    vagasGaragem,
+    anoConstrucao,
+    andar,
+    caracteristicas,
+    descricao,
+    galeria,
+    "corretor": corretorResponsavel->{
+      nome,
+      cargo,
+      creci,
+      telefone,
+      whatsapp,
+      email,
+      "fotoUrl": foto.asset->url
+    }
+  }`,
+  { slug: imovelSlug, categoria: imovelCategoria },
+);
+
+if (!imovel) {
+  return Astro.redirect("/404");
+}
+
+// Formatações
+const precoFormatado = new Intl.NumberFormat("pt-BR", {
+  style: "currency",
+  currency: "BRL",
+  maximumFractionDigits: 0,
+}).format(imovel.preco);
+
+const condominioFormatado = imovel.precoCondominio
+  ? new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+      maximumFractionDigits: 0,
+    }).format(imovel.precoCondominio)
+  : null;
+
+const iptuFormatado = imovel.valorIptu
+  ? new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+      maximumFractionDigits: 0,
+    }).format(imovel.valorIptu)
+  : null;
+
+const finalidadeLabel = imovel.finalidade === "venda" ? "Venda" : "Aluguel";
+const categoriaLabel =
+  imovel.categoria.charAt(0).toUpperCase() + imovel.categoria.slice(1);
+
+const localizacao = [imovel.bairro, imovel.cidade].filter(Boolean).join(" • ");
+
+// Galeria
+const galeriaUrls =
+  imovel.galeria?.map((img: any) =>
+    urlFor(img).width(1600).height(1000).fit("crop").url(),
+  ) ?? [];
+
+const capaUrl =
+  galeriaUrls[0] ??
+  "https://placehold.co/1600x1000/283618/FEFAE0?text=SWEET+HOME";
+
+// WhatsApp
+const whatsappNumero = imovel.corretor?.whatsapp ?? "5567999998888";
+const urlPagina = Astro.url.href;
+const mensagemWhatsapp = encodeURIComponent(
+  `Olá! Tenho interesse no imóvel ${imovel.titulo} (Cód. ${imovel.codigo}) — ${urlPagina}. Poderia me passar mais informações?`,
+);
+const whatsappLink = `https://wa.me/${whatsappNumero}?text=${mensagemWhatsapp}`;
+
+// Compartilhamento
+const tituloCompartilhavel = encodeURIComponent(
+  `${imovel.titulo} | Sweet Home Imóveis`,
+);
+const urlCompartilhavel = encodeURIComponent(urlPagina);
+
+const shareLinks = {
+  whatsapp: `https://wa.me/?text=${tituloCompartilhavel}%20${urlCompartilhavel}`,
+  facebook: `https://www.facebook.com/sharer/sharer.php?u=${urlCompartilhavel}`,
+  x: `https://twitter.com/intent/tweet?text=${tituloCompartilhavel}&url=${urlCompartilhavel}`,
+};
+
+// Ficha técnica (array para renderização condicional)
+const fichaTecnica = [
+  { label: "Quartos", value: imovel.quartos, icon: "bed", suffix: "" },
+  { label: "Suítes", value: imovel.suites, icon: "bed", suffix: "" },
+  { label: "Banheiros", value: imovel.banheiros, icon: "bath", suffix: "" },
+  {
+    label: "Área Útil",
+    value: imovel.areaUtil,
+    icon: "maximize",
+    suffix: " m²",
+  },
+  {
+    label: "Área do Terreno",
+    value: imovel.areaTerreno,
+    icon: "trees",
+    suffix: imovel.categoria === "rural" ? " ha" : " m²",
+  },
+  { label: "Vagas", value: imovel.vagasGaragem, icon: "car", suffix: "" },
+  {
+    label: "Ano de Construção",
+    value: imovel.anoConstrucao,
+    icon: "calendar",
+    suffix: "",
+  },
+  { label: "Andar", value: imovel.andar, icon: "building", suffix: "" },
+].filter((item) => item.value != null && item.value !== "");
+
+const iconMap: Record<string, any> = {
+  bed: Bed,
+  bath: Bath,
+  maximize: Maximize2,
+  trees: Trees,
+  car: Car,
+  calendar: Calendar,
+  building: Building2,
+};
+---
+
+<Layout title={`${imovel.titulo} | Sweet Home Imóveis`}>
+  <Header />
+
+  <main class="pt-20 bg-brand-cream min-h-screen">
+    <!-- Breadcrumb -->
+    <div class="bg-sh-dark text-sh-cream/70 py-4 border-b border-sh-olive/30">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex items-center gap-2 text-xs sm:text-sm font-medium">
+          <a href="/" class="hover:text-sh-tan transition-colors">Home</a>
+          <span class="text-sh-olive">/</span>
+          <a href="/imoveis" class="hover:text-sh-tan transition-colors"
+            >Imóveis</a
+          >
+          <span class="text-sh-olive">/</span>
+          <a
+            href={`/imoveis/${imovel.categoria}`}
+            class="hover:text-sh-tan transition-colors"
+          >
+            {categoriaLabel}
+          </a>
+          <span class="text-sh-olive">/</span>
+          <span class="text-sh-tan truncate max-w-50 sm:max-w-none"
+            >{imovel.titulo}</span
+          >
+        </nav>
+      </div>
+    </div>
+
+    <!-- Galeria -->
+    <section class="bg-sh-darker py-8 sm:py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="relative rounded-2xl overflow-hidden shadow-2xl bg-sh-dark group"
+          id="gallery-container"
+        >
+          <button
+            id="open-lightbox"
+            type="button"
+            class="block w-full cursor-zoom-in"
+            aria-label="Ampliar foto do imóvel"
+          >
+            <img
+              id="main-image"
+              src={capaUrl}
+              alt={imovel.titulo}
+              class="w-full h-75 sm:h-125 lg:h-150 object-cover transition-opacity duration-300"
+              width="1600"
+              height="1000"
+            />
+          </button>
+
+          <!-- Badge Finalidade -->
+          <span
+            class="absolute z-10 top-4 left-4 bg-sh-dark/90 backdrop-blur-md text-sh-cream text-xs font-semibold px-3 py-1.5 rounded-full uppercase tracking-wider"
+          >
+            {finalidadeLabel}
+          </span>
+
+          {
+            imovel.destaque && (
+              <span class="absolute z-10 top-4 right-4 bg-sh-tan text-sh-dark font-bold text-xs px-3 py-1.5 rounded-full uppercase tracking-wider">
+                Destaque
+              </span>
+            )
+          }
+
+          <!-- Controles da galeria -->
+          {
+            galeriaUrls.length > 1 && (
+              <>
+                <button
+                  id="prev-btn"
+                  type="button"
+                  class="absolute z-10 left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-sh-dark/70 hover:bg-sh-tan hover:text-sh-dark text-sh-cream flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+                  aria-label="Foto anterior"
+                >
+                  <ChevronLeft class="w-6 h-6" />
+                </button>
+                <button
+                  id="next-btn"
+                  type="button"
+                  class="absolute z-10 right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-sh-dark/70 hover:bg-sh-tan hover:text-sh-dark text-sh-cream flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+                  aria-label="Próxima foto"
+                >
+                  <ChevronRight class="w-6 h-6" />
+                </button>
+                <div
+                  class="absolute z-10 bottom-4 left-1/2 -translate-x-1/2 bg-sh-dark/70 backdrop-blur-md text-sh-cream text-xs font-medium px-3 py-1 rounded-full"
+                  id="gallery-counter"
+                >
+                  1 / {galeriaUrls.length}
+                </div>
+              </>
+            )
+          }
+        </div>
+
+        <!-- Miniaturas -->
+        {
+          galeriaUrls.length > 1 && (
+            <div
+              class="flex gap-2 mt-3 overflow-x-auto pb-1 custom-scrollbar"
+              id="thumbnails"
+            >
+              {galeriaUrls.map((url: string, index: number) => (
+                <button
+                  type="button"
+                  data-index={index}
+                  aria-label={`Ver foto ${index + 1}`}
+                  class:list={[
+                    "thumbnail-btn shrink-0 w-20 h-14 sm:w-24 sm:h-16 rounded-lg overflow-hidden border-2 transition-all",
+                    index === 0
+                      ? "border-sh-tan"
+                      : "border-transparent opacity-60 hover:opacity-100",
+                  ]}
+                >
+                  <img
+                    src={url}
+                    alt={`${imovel.titulo} - Foto ${index + 1}`}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </button>
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </section>
+
+    <dialog
+      id="gallery-lightbox"
+      aria-label={`Galeria de fotos: ${imovel.titulo}`}
+      class="fixed inset-0 m-0 h-screen w-screen max-h-none max-w-none border-0 bg-black/95 p-4 text-white backdrop:bg-black/95"
+    >
+      <div class="relative flex h-full w-full items-center justify-center">
+        <button
+          id="lightbox-close"
+          type="button"
+          class="absolute right-2 top-2 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 hover:bg-white/20"
+          aria-label="Fechar galeria"
+        >
+          <X class="h-6 w-6" />
+        </button>
+        {
+          galeriaUrls.length > 1 && (
+            <>
+              <button
+                id="lightbox-prev"
+                type="button"
+                class="absolute left-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 sm:left-4"
+                aria-label="Foto anterior"
+              >
+                <ChevronLeft class="h-7 w-7" />
+              </button>
+              <button
+                id="lightbox-next"
+                type="button"
+                class="absolute right-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 sm:right-4"
+                aria-label="Próxima foto"
+              >
+                <ChevronRight class="h-7 w-7" />
+              </button>
+            </>
+          )
+        }
+        <img
+          id="lightbox-image"
+          src={capaUrl}
+          alt={imovel.titulo}
+          class="max-h-full max-w-full object-contain"
+        />
+        <span
+          id="lightbox-counter"
+          class="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-3 py-1 text-sm"
+          aria-live="polite"
+        >
+          1 / {galeriaUrls.length || 1}
+        </span>
+      </div>
+    </dialog>
+
+    <!-- Conteúdo principal -->
+    <section class="py-12 sm:py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          <!-- Coluna esquerda: informações -->
+          <div class="lg:col-span-8 space-y-8">
+            <!-- Cabeçalho do imóvel -->
+            <div>
+              <div class="flex flex-wrap items-center gap-2 mb-2">
+                <span
+                  class="text-xs font-semibold uppercase tracking-widest text-sh-rust"
+                >
+                  {categoriaLabel} • {finalidadeLabel}
+                </span>
+                <span class="text-gray-300">|</span>
+                <span class="text-xs font-medium text-gray-500"
+                  >Cód. {imovel.codigo}</span
+                >
+              </div>
+              <h1
+                class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-sh-dark uppercase leading-tight"
+              >
+                {imovel.titulo}
+              </h1>
+              <p
+                class="flex items-center gap-2 text-gray-600 text-sm sm:text-base mt-3"
+              >
+                <MapPin class="w-5 h-5 text-sh-rust shrink-0" />
+                {imovel.endereco}
+              </p>
+            </div>
+
+            <!-- Preço -->
+            <div
+              class="bg-white rounded-2xl p-6 sm:p-8 border border-sh-tan/30 shadow-luxury"
+            >
+              <span
+                class="text-xs font-semibold uppercase tracking-wider text-gray-500"
+                >Valor de {finalidadeLabel}</span
+              >
+              <div
+                class="font-heading text-3xl sm:text-4xl font-bold text-sh-dark mt-1"
+              >
+                {precoFormatado}
+              </div>
+              <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
+                {
+                  condominioFormatado && (
+                    <span>
+                      Condomínio:{" "}
+                      <strong class="text-sh-dark">
+                        {condominioFormatado}
+                      </strong>
+                    </span>
+                  )
+                }
+                {
+                  iptuFormatado && (
+                    <span>
+                      IPTU:{" "}
+                      <strong class="text-sh-dark">{iptuFormatado}</strong>
+                    </span>
+                  )
+                }
+              </div>
+            </div>
+
+            <!-- Descrição -->
+            <div
+              class="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-md"
+            >
+              <h2
+                class="font-heading text-2xl font-bold text-sh-dark uppercase mb-4"
+              >
+                Sobre o Imóvel
+              </h2>
+              <div
+                class="prose prose-sm sm:prose-base max-w-none text-gray-700 leading-relaxed"
+              >
+                {
+                  Array.isArray(imovel.descricao) && (
+                    <PortableText value={imovel.descricao} />
+                  )
+                }
+              </div>
+            </div>
+
+            <!-- Ficha Técnica -->
+            {
+              fichaTecnica.length > 0 && (
+                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-md">
+                  <h2 class="font-heading text-2xl font-bold text-sh-dark uppercase mb-6">
+                    Ficha Técnica
+                  </h2>
+                  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {fichaTecnica.map((item) => {
+                      const IconComponent = iconMap[item.icon];
+                      return (
+                        <div class="flex items-center gap-3 p-3 rounded-xl bg-sh-cream/60">
+                          {IconComponent && (
+                            <IconComponent class="w-6 h-6 text-sh-rust shrink-0" />
+                          )}
+                          <div>
+                            <div class="font-heading text-xl font-bold text-sh-dark leading-none">
+                              {item.value}
+                              {item.suffix}
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">
+                              {item.label}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )
+            }
+
+            <!-- Características -->
+            {
+              imovel.caracteristicas && imovel.caracteristicas.length > 0 && (
+                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-md">
+                  <h2 class="font-heading text-2xl font-bold text-sh-dark uppercase mb-6">
+                    Características & Comodidades
+                  </h2>
+                  <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {imovel.caracteristicas.map((carac: string) => (
+                      <li class="flex items-center gap-2 text-sm text-gray-700">
+                        <span class="w-5 h-5 rounded-full bg-sh-olive/20 text-sh-olive flex items-center justify-center shrink-0">
+                          <svg
+                            class="w-3 h-3"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="3"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        </span>
+                        {carac}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            }
+
+            <!-- WhatsApp CTA -->
+            <a
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center justify-center gap-3 w-full py-4 sm:py-5 bg-[#25D366] hover:bg-[#1da851] text-white font-heading font-bold text-lg uppercase tracking-wider rounded-2xl transition-all shadow-lg hover:shadow-xl"
+            >
+              <MessageCircle class="w-6 h-6" />
+              Falar com o Corretor no WhatsApp
+            </a>
+          </div>
+
+          <!-- Coluna direita: sidebar -->
+          <aside class="lg:col-span-4 space-y-6">
+            <!-- Card do Corretor -->
+            {
+              imovel.corretor && (
+                <div class="bg-sh-dark text-sh-cream rounded-2xl p-6 sm:p-8 border border-sh-olive/30 shadow-xl sticky top-24">
+                  <span class="text-xs font-bold uppercase tracking-widest text-sh-tan">
+                    Corretor Responsável
+                  </span>
+                  <div class="flex items-center gap-4 mt-4">
+                    {imovel.corretor.fotoUrl ? (
+                      <img
+                        src={imovel.corretor.fotoUrl}
+                        alt={imovel.corretor.nome}
+                        class="w-16 h-16 rounded-full object-cover border-2 border-sh-tan"
+                        width="64"
+                        height="64"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div class="w-16 h-16 rounded-full bg-sh-olive/40 border-2 border-sh-tan flex items-center justify-center text-sh-tan text-2xl font-heading font-bold">
+                        {imovel.corretor.nome?.charAt(0) ?? "O"}
+                      </div>
+                    )}
+                    <div>
+                      <h3 class="font-heading text-xl font-bold text-white">
+                        {imovel.corretor.nome}
+                      </h3>
+                      <p class="text-xs text-sh-cream/70">
+                        {imovel.corretor.cargo}
+                      </p>
+                      {imovel.corretor.creci && (
+                        <p class="text-xs text-sh-tan mt-1">
+                          {imovel.corretor.creci}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div class="mt-5 space-y-2 text-sm">
+                    {imovel.corretor.telefone && (
+                      <a
+                        href={`tel:${imovel.corretor.telefone.replace(/\D/g, "")}`}
+                        class="flex items-center gap-2 text-sh-cream/80 hover:text-sh-tan transition-colors"
+                      >
+                        <Phone class="w-4 h-4 text-sh-tan" />{" "}
+                        {imovel.corretor.telefone}
+                      </a>
+                    )}
+                    <a
+                      href={whatsappLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="flex items-center gap-2 text-sh-cream/80 hover:text-sh-tan transition-colors"
+                    >
+                      <MessageCircle class="w-4 h-4 text-sh-tan" /> WhatsApp
+                    </a>
+                  </div>
+
+                  <a
+                    href={whatsappLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="mt-6 flex items-center justify-center gap-2 w-full py-3 bg-sh-tan hover:bg-sh-rust text-sh-dark hover:text-white font-bold rounded-xl transition-all text-sm uppercase tracking-wider"
+                  >
+                    <MessageCircle class="w-4 h-4" />
+                    Enviar Mensagem
+                  </a>
+                </div>
+              )
+            }
+
+            <!-- Compartilhar -->
+            <div
+              class="bg-white rounded-2xl p-6 border border-gray-100 shadow-md"
+            >
+              <h3
+                class="font-heading text-lg font-bold text-sh-dark uppercase flex items-center gap-2 mb-4"
+              >
+                <Share2 class="w-5 h-5 text-sh-rust" /> Compartilhar
+              </h3>
+              <div class="flex items-center gap-3">
+                <a
+                  href={shareLinks.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-10 h-10 rounded-full bg-[#25D366]/10 hover:bg-[#25D366] text-[#25D366] hover:text-white flex items-center justify-center transition-all"
+                  aria-label="Compartilhar no WhatsApp"
+                >
+                  <MessageCircle class="w-5 h-5" />
+                </a>
+                <a
+                  href={shareLinks.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-10 h-10 rounded-full bg-[#1877F2]/10 hover:bg-[#1877F2] text-[#1877F2] hover:text-white flex items-center justify-center transition-all"
+                  aria-label="Compartilhar no Facebook"
+                >
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"
+                    ><path
+                      d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                    ></path></svg
+                  >
+                </a>
+                <a
+                  href={shareLinks.x}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-10 h-10 rounded-full bg-black/10 hover:bg-black text-black hover:text-white flex items-center justify-center transition-all"
+                  aria-label="Compartilhar no X"
+                >
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"
+                    ><path
+                      d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                    ></path></svg
+                  >
+                </a>
+                <button
+                  type="button"
+                  id="copy-link-btn"
+                  class="w-10 h-10 rounded-full bg-sh-olive/10 hover:bg-sh-olive text-sh-olive hover:text-white flex items-center justify-center transition-all"
+                  aria-label="Copiar link"
+                >
+                  <LinkIcon class="w-5 h-5" />
+                </button>
+              </div>
+              <p id="copy-feedback" class="text-xs text-sh-olive mt-2 hidden">
+                Link copiado!
+              </p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+  <script is:inline define:vars={{ galeriaUrls, capaUrl }}>
+    (function () {
+      const imagens = galeriaUrls.length > 0 ? galeriaUrls : [capaUrl];
+      const mainImage = document.getElementById("main-image");
+      const openLightboxBtn = document.getElementById("open-lightbox");
+      const prevBtn = document.getElementById("prev-btn");
+      const nextBtn = document.getElementById("next-btn");
+      const counter = document.getElementById("gallery-counter");
+      const thumbnails = document.querySelectorAll(".thumbnail-btn");
+      const lightbox = document.getElementById("gallery-lightbox");
+      const lightboxImage = document.getElementById("lightbox-image");
+      const lightboxCounter = document.getElementById("lightbox-counter");
+      const lightboxCloseBtn = document.getElementById("lightbox-close");
+      const lightboxPrevBtn = document.getElementById("lightbox-prev");
+      const lightboxNextBtn = document.getElementById("lightbox-next");
+
+      if (!mainImage || !lightbox || !lightboxImage || imagens.length === 0)
+        return;
+
+      let indexAtual = 0;
+
+      function atualizarGaleria(novoIndex) {
+        indexAtual = (novoIndex + imagens.length) % imagens.length;
+        mainImage.src = imagens[indexAtual];
+        lightboxImage.src = imagens[indexAtual];
+        lightboxImage.alt = `${mainImage.alt} - Foto ${indexAtual + 1}`;
+
+        const contadorTexto = `${indexAtual + 1} / ${imagens.length}`;
+        if (counter) counter.textContent = contadorTexto;
+        if (lightboxCounter) lightboxCounter.textContent = contadorTexto;
+
+        thumbnails.forEach((thumb, i) => {
+          const isActive = i === indexAtual;
+          thumb.classList.toggle("border-sh-tan", isActive);
+          thumb.classList.toggle("border-transparent", !isActive);
+          thumb.classList.toggle("opacity-60", !isActive);
+          thumb.classList.toggle("opacity-100", isActive);
+        });
+      }
+
+      prevBtn?.addEventListener("click", () =>
+        atualizarGaleria(indexAtual - 1),
+      );
+      nextBtn?.addEventListener("click", () =>
+        atualizarGaleria(indexAtual + 1),
+      );
+
+      thumbnails.forEach((thumb, index) => {
+        thumb.addEventListener("click", () => atualizarGaleria(index));
+      });
+
+      openLightboxBtn?.addEventListener("click", () => {
+        atualizarGaleria(indexAtual);
+        lightbox.showModal();
+      });
+      lightboxCloseBtn?.addEventListener("click", () => lightbox.close());
+      lightboxPrevBtn?.addEventListener("click", () =>
+        atualizarGaleria(indexAtual - 1),
+      );
+      lightboxNextBtn?.addEventListener("click", () =>
+        atualizarGaleria(indexAtual + 1),
+      );
+
+      lightbox.addEventListener("click", (event) => {
+        if (event.target === lightbox) lightbox.close();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (!lightbox.open) return;
+
+        if (event.key === "Escape") {
+          lightbox.close();
+        } else if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          atualizarGaleria(indexAtual - 1);
+        } else if (event.key === "ArrowRight") {
+          event.preventDefault();
+          atualizarGaleria(indexAtual + 1);
+        }
+      });
+
+      const copyBtn = document.getElementById("copy-link-btn");
+      const copyFeedback = document.getElementById("copy-feedback");
+
+      copyBtn?.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+        } catch {
+          const input = document.createElement("input");
+          input.value = window.location.href;
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand("copy");
+          document.body.removeChild(input);
+        }
+        copyFeedback?.classList.remove("hidden");
+        setTimeout(() => copyFeedback?.classList.add("hidden"), 2000);
+      });
+    })();
+  </script>
+</Layout>

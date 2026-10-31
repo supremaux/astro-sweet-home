@@ -1,11 +1,9 @@
 ---
 import { ChevronDown, Menu, Phone } from "@lucide/astro";
-import Layout from "../layouts/Layout.astro";
 import Logo from "./Logo.astro";
 ---
 
-<Layout>
-  <header
+<header
     class="fixed top-0 left-0 right-0 z-50 bg-brand-darkolive/95 backdrop-blur-md border-b border-brand-sand/20 transition-all duration-300"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,7 +26,7 @@ import Logo from "./Logo.astro";
             >Home</a
           >
           <a
-            href="#quem-somos"
+            href="/quem-somos"
             class="font-display text-lg tracking-wider text-brand-cream hover:text-brand-sand transition-colors duration-200"
             >Quem Somos</a
           >
@@ -49,12 +47,12 @@ import Logo from "./Logo.astro";
                 >Residênciais</a
               >
               <a
-                href="#"
+                href="/rurais"
                 class="block px-4 py-2 text-sm text-brand-cream hover:bg-brand-olive/40 hover:text-brand-sand"
                 >Rurais</a
               >
               <a
-                href="#"
+                href="/comerciais"
                 class="block px-4 py-2 text-sm text-brand-cream hover:bg-brand-olive/40 hover:text-brand-sand"
                 >Comerciais</a
               >
@@ -101,12 +99,12 @@ import Logo from "./Logo.astro";
       class="hidden lg:hidden bg-brand-darkolive border-b border-brand-sand/20 px-4 pt-2 pb-6 space-y-3"
     >
       <a
-        href="#"
+        href="/"
         class="block px-3 py-2 rounded-md font-display text-xl text-brand-cream hover:bg-brand-olive/30 hover:text-brand-sand"
         >Home</a
       >
       <a
-        href="#quem-somos"
+        href="/quem-somos"
         class="block px-3 py-2 rounded-md font-display text-xl text-brand-cream hover:bg-brand-olive/30 hover:text-brand-sand"
         >Quem Somos</a
       >
@@ -117,35 +115,35 @@ import Logo from "./Logo.astro";
           >Imóveis</span
         >
         <a
-          href="#"
+          href="/residenciais"
           class="block px-3 py-1.5 text-brand-cream/80 hover:text-brand-sand text-base"
           >Residenciais</a
         >
         <a
-          href="#"
+          href="/rurais"
           class="block px-3 py-1.5 text-brand-cream/80 hover:text-brand-sand text-base"
           >Rurais</a
         >
         <a
-          href="#"
+          href="/comerciais"
           class="block px-3 py-1.5 text-brand-cream/80 hover:text-brand-sand text-base"
           >Comerciais</a
         >
       </div>
 
       <a
-        href="#unidades"
+        href="/unidades"
         class="block px-3 py-2 rounded-md font-display text-xl text-brand-cream hover:bg-brand-olive/30 hover:text-brand-sand"
         >Unidades</a
       >
       <a
-        href="#contato"
+        href="/contato"
         class="block px-3 py-2 rounded-md font-display text-xl text-brand-cream hover:bg-brand-olive/30 hover:text-brand-sand"
         >Contato</a
       >
 
       <a
-        href="#contato"
+        href="/contato"
         class="w-full mt-4 flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-brand-sand text-brand-darkolive font-medium text-center"
       >
         <i data-lucide="phone" class="w-5 h-5"></i>
@@ -153,4 +151,3 @@ import Logo from "./Logo.astro";
       </a>
     </div>
   </header>
-</Layout>
