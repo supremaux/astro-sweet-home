@@ -19,6 +19,7 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
+  QrCode,
   Home as HomeIcon,
 } from "@lucide/astro";
 import { sanityClient, urlFor } from "../../lib/sanity";
@@ -655,11 +656,65 @@ const iconMap: Record<string, any> = {
                 >
                   <LinkIcon class="w-5 h-5" />
                 </button>
+
+                <button
+                  type="button"
+                  id="qr-code-btn"
+                  class="w-10 h-10 rounded-full bg-sh-dark/10 hover:bg-sh-dark text-sh-dark hover:text-white flex items-center justify-center transition-all"
+                  aria-label="Exibir QR Code"
+                >
+                  <QrCode class="w-5 h-5" />
+                </button>
               </div>
               <p id="copy-feedback" class="text-xs text-sh-olive mt-2 hidden">
                 Link copiado!
               </p>
             </div>
+
+            <!-- Modal QR Code -->
+            <dialog
+              id="qr-modal"
+              class="backdrop:bg-sh-darker/80 backdrop:backdrop-blur-sm rounded-2xl p-0 border-0 shadow-2xl max-w-sm w-[90vw] open:animate-in open:fade-in open:zoom-in-95"
+            >
+              <div class="bg-white rounded-2xl p-6 sm:p-8 text-center relative">
+                <button
+                  type="button"
+                  id="qr-modal-close"
+                  class="absolute top-3 right-3 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center transition-colors"
+                  aria-label="Fechar"
+                >
+                  <X class="w-5 h-5" />
+                </button>
+
+                <span
+                  class="text-xs font-bold uppercase tracking-widest text-sh-rust"
+                >
+                  Acesse pelo celular
+                </span>
+                <h3
+                  class="font-heading text-2xl font-bold text-sh-dark uppercase mt-1 mb-4"
+                >
+                  QR Code do Imóvel
+                </h3>
+
+                <div class="bg-sh-cream rounded-xl p-4 inline-block">
+                  <img
+                    id="qr-code-image"
+                    src=""
+                    alt="QR Code para acessar este imóvel"
+                    width="250"
+                    height="250"
+                    class="w-50 h-50 sm:w-62.5 sm:h-62.5"
+                  />
+                </div>
+
+                <p class="text-xs text-gray-500 mt-4 leading-relaxed">
+                  Aponte a câmera do seu celular para o código e acesse
+                  <strong class="text-sh-dark">{imovel.titulo}</strong> diretamente
+                  no seu dispositivo.
+                </p>
+              </div>
+            </dialog>
           </aside>
         </div>
       </div>
@@ -766,5 +821,26 @@ const iconMap: Record<string, any> = {
         setTimeout(() => copyFeedback?.classList.add("hidden"), 2000);
       });
     })();
+
+    // QR Code Modal
+    const qrBtn = document.getElementById("qr-code-btn");
+    const qrModal = document.getElementById("qr-modal");
+    const qrImage = document.getElementById("qr-code-image");
+    const qrClose = document.getElementById("qr-modal-close");
+
+    if (qrBtn && qrModal && qrImage) {
+      qrBtn.addEventListener("click", () => {
+        const urlAtual = encodeURIComponent(window.location.href);
+        qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${urlAtual}`;
+        qrModal.showModal();
+      });
+
+      qrClose?.addEventListener("click", () => qrModal.close());
+
+      // Fechar ao clicar fora (no backdrop)
+      qrModal.addEventListener("click", (e) => {
+        if (e.target === qrModal) qrModal.close();
+      });
+    }
   </script>
 </Layout>
